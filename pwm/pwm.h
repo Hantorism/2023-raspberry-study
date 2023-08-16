@@ -19,7 +19,6 @@
 #define HIGH 1
 
 int PWMExport(int pwmnum) {
-    #define BUFFER_MAX 3
     char buffer[BUFFER_MAX];
     int bytes_written;
     int fd;
@@ -81,7 +80,6 @@ int PWMEnable(int pwmnum) {
     const char s_unenable_str[] = "0";
     const char s_enable_str[] = "1";
 
-    #define DIRECTION_MAX 45
     char path[DIRECTION_MAX];
     int fd;
 

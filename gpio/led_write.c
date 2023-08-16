@@ -11,7 +11,7 @@
 
 #define LED_OUT_R 17
 #define LED_OUT_G 27
-#define LED_OUT_B 27
+#define LED_OUT_B 22
 
 #define INTERVAL 1
 
@@ -52,26 +52,31 @@ int main(int argc, char *argv[])
 
     do
     {
-        if (-1 == GPIOWrite(LED_OUT_R, true))
-            return (3);
-        
-        if (-1 == GPIOWrite(LED_OUT_R, false))
+        if (-1 == GPIOWrite(LED_OUT_R, HIGH))
             return (3);
 
-        if (-1 == GPIOWrite(LED_OUT_G, true))
-            return (3);
-
-        if (-1 == GPIOWrite(LED_OUT_G, false))
-            return (3);
-
-        if (-1 == GPIOWrite(LED_OUT_B, true))
-            return (3);
-
-        if (-1 == GPIOWrite(LED_OUT_B, false))
-            return (3);
-        
         sleep(INTERVAL);
-    } while (count++ < 10);
+        
+        if (-1 == GPIOWrite(LED_OUT_R, LOW))
+            return (3);
+
+        if (-1 == GPIOWrite(LED_OUT_G, HIGH))
+            return (3);
+
+        sleep(INTERVAL);
+
+        if (-1 == GPIOWrite(LED_OUT_G, LOW))
+            return (3);
+
+        if (-1 == GPIOWrite(LED_OUT_B, HIGH))
+            return (3);
+
+        sleep(INTERVAL);
+
+        if (-1 == GPIOWrite(LED_OUT_B, LOW))
+            return (3);
+        
+    } while (count++ < 5);
 
     /*
      * Disable GPIO pins
