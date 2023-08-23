@@ -10,7 +10,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#include "../include/socket.h"
+#include "socket.h"
+#include "utils.h"
 
 #define SENDER_PORT 10000
 
