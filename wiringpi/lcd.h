@@ -64,18 +64,6 @@
 #define RWB 0b00000010 // Read/Write bit
 #define RSB 0b00000001 // Register select bit
 
-void lcd_init(int fd) {    
-    // 디스플레이 초기화
-    lcd_byte(0x33, LCD_CMD_MODE);
-    lcd_byte(0x32, LCD_CMD_MODE);
-    lcd_byte(0x06, LCD_CMD_MODE);
-    lcd_byte(0x0C, LCD_CMD_MODE);
-    lcd_byte(0x28, LCD_CMD_MODE);
-    lcd_byte(0x01, LCD_CMD_MODE); 
-
-    delayMicroseconds(500);
-}
-
 void lcd_toggle_enable(int fd, int bits) {
     delayMicroseconds(500);
     wiringPiI2CReadReg8(fd, (bits | ENB));
@@ -84,7 +72,7 @@ void lcd_toggle_enable(int fd, int bits) {
     delayMicroseconds(500);
 }
 
-void lcd_byte(int fd, int bits, int mode, int backlight) {
+void lcd_byte(int fd, int backlight, int bits, int mode) {
     int bits_high;
     int bits_low;
 
@@ -92,30 +80,42 @@ void lcd_byte(int fd, int bits, int mode, int backlight) {
     bits_low = mode | ((bits << 4) & 0xF0) | backlight;
 
     wiringPiI2CReadReg8(fd, bits_high);
-    lcd_toggle_enable(bits_high);
+    lcd_toggle_enable(fd, bits_high);
 
     wiringPiI2CReadReg8(fd, bits_low);
-    lcd_toggle_enable(bits_low);
+    lcd_toggle_enable(fd, bits_low);
 }
 
-void lcd_write_string(int fd, char *str) {
+void lcd_init(int fd, int backlight) {    
+    // 디스플레이 초기화
+    lcd_byte(fd, backlight, 0x33, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x32, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x06, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x0C, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x28, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x01, LCD_CMD_MODE); 
+
+    delayMicroseconds(500);
+}
+
+void lcd_write_string(int fd, int backlight, char *str) {
     while (*str) {
-        lcd_byte(fd, *(str++), LCD_DATA_MODE);
+        lcd_byte(fd, backlight, *(str++), LCD_DATA_MODE);
     }   
 }
 
 // LINE1 = 128, LINE2 = 192
-void lcd_cursor_move(int fd, int position) {
-    lcd_byte(fd, position, LCD_CMD_MODE);
+void lcd_cursor_move(int fd, int backlight, int position) {
+    lcd_byte(fd, backlight, position, LCD_CMD_MODE);
 }
 
 void lcd_delay(int secend) {
     delay(secend * 1000);
 }
 
-void lcd_clear(int fd) {
-    lcd_byte(fd, 0x01, LCD_CMD_MODE);
-    lcd_byte(fd, 0x02, LCD_CMD_MODE);
+void lcd_clear(int fd, int backlight) {
+    lcd_byte(fd, backlight, 0x01, LCD_CMD_MODE);
+    lcd_byte(fd, backlight, 0x02, LCD_CMD_MODE);
 }
 
 #endif

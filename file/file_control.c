@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     }
 
     // "Hello World" 쓰기
-    char message[] = "Hello World\n";
+    char message[16] = "Hello World\n";
     long bytes_written = write(file, message, strlen(message));
     
     if (bytes_written == -1) {
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     }
 
     buffer[bytes_read] = '\0';  // Null-terminate the buffer
-    printf("파일 내용 (offset %ld부터):\n%s", offset, buffer);
+    printf("파일 내용 (offset %lld부터):\n%s", offset, buffer);
 
     // 파일 닫기
     close(file);

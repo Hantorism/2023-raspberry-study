@@ -13,12 +13,12 @@
 
 #define DEVICE_MAX 32
 
-#define MODE SPI_MODE_0;
-#define BITS 8;
-#define CLOCK 1000000;
-#define DELAY 5;
-
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+
+const u_int8_t MODE = SPI_MODE_0;
+const u_int8_t BITS = 8;
+const u_int32_t CLOCK = 1000000;
+const u_int16_t DELAY = 5;
 
 int spi_init(int spi)
 {
@@ -70,7 +70,7 @@ uint8_t control_bits(uint8_t channel)
     return (0x8 | control_bits_differential(channel));
 }
 
-int read_adc(int spi, uint8_t channel)
+int read_adc(int fd, uint8_t channel)
 {
     uint8_t tx[] = {1, control_bits(channel), 0};
     uint8_t rx[3];
@@ -91,4 +91,14 @@ int read_adc(int spi, uint8_t channel)
     }
 
     return ((rx[1] << 8) | rx[2]) & 0x3FF;
+}
+
+int spi_final(int fd)
+{
+    if (close(fd) == -1)
+    {
+        return -1;
+    }
+    
+    return 0;
 }

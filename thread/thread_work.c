@@ -36,7 +36,7 @@ int main() {
     int results[NUM_THREADS];
 
     int num_start = 1;
-    int num_end = 100;
+    int num_end = 10;
 
     int num_range = (num_end - num_start + 1) / NUM_THREADS;
 

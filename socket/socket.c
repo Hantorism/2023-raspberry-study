@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <pthread.h>
-#include <curl/curl.h>
 #include <arpa/inet.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -15,12 +14,12 @@
 
 #define SENDER_PORT 10000
 
-#define RECEIVER_PORT 10000
-#define RECEIVER_ADDRESS "192.168.0.1"
+#define RECEIVER_PORT 10001
+#define RECEIVER_ADDRESS "192.168.1.3"
 
 #define INTERVAL 3 
 
-char send_packet[8] = "NONE";
+char send_packet[2] = "N";
 char **recv_packet = NULL;
 
 int *random_number = 0;
@@ -50,16 +49,22 @@ void *socket_receiver_thd(void *receiver_args) {
     return 0;
 }
 
-void status_thd() {
-    srand(time(NULL));
-
+void *status_thd() {
     while (1) {
-        int random_number = rand() % 10;
+        if (recv_packet) {
+            if (*recv_packet) {
+                srand(time(NULL));
 
-        sprintf(send_packet, "%d", random_number);
+                int random_number = rand() % 10;
 
-        if (recv_packet != NULL) {
-            printf("%s\n", *recv_packet);
+                sprintf(send_packet, "%d", random_number);
+
+                if (recv_packet != NULL) {
+                    printf("%s\n", *recv_packet);
+                }
+
+                sleep(INTERVAL);
+            }
         }
     }
 }

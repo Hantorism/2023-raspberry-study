@@ -15,29 +15,29 @@ int main() {
 
     int fd = wiringPiI2CSetup(LCD_ADDRESS);
 
-    lcd_init(fd);
+    lcd_init(fd, LCD_BACKLIGHT_ON);
 
-    char line1[16] = "Hello, World!";
-    char line2[16] = "Have a nice day!";
+    char line1[32] = "Hello, World!";
+    char line2[32] = "Have a nice day!";
 
-    char line3[16] = "Hello, Raspberry!";
-    char line4[16] = "Welcome to System!";
+    char line3[32] = "Hello, Raspberry!";
+    char line4[32] = "Welcome to System!";
 
     int count = 0;
 
     do {    
-        lcd_clear(fd);
-        lcd_cursor_move(fd, LCD_CURSOR_LINE1);
-        lcd_write_string(fd, line01);
-        lcd_cursor_move(fd, LCD_CURSOR_LINE2);
-        lcd_write_string(fd, line02);
+        lcd_clear(fd, LCD_BACKLIGHT_ON);
+        lcd_cursor_move(fd, LCD_BACKLIGHT_ON, LCD_CURSOR_LINE1);
+        lcd_write_string(fd, LCD_BACKLIGHT_ON, line1);
+        lcd_cursor_move(fd, LCD_BACKLIGHT_ON, LCD_CURSOR_LINE2);
+        lcd_write_string(fd, LCD_BACKLIGHT_ON, line2);
         lcd_delay(INTERVAL);
 
-        lcd_clear(fd);
-        lcd_cursor_move(fd, LCD_CURSOR_LINE1);
-        lcd_write_string(fd, line03);
-        lcd_cursor_move(fd, LCD_CURSOR_LINE2);
-        lcd_write_string(fd, line04);
+        lcd_clear(fd, LCD_BACKLIGHT_ON);
+        lcd_cursor_move(fd, LCD_BACKLIGHT_ON, LCD_CURSOR_LINE1);
+        lcd_write_string(fd, LCD_BACKLIGHT_ON, line3);
+        lcd_cursor_move(fd, LCD_BACKLIGHT_ON, LCD_CURSOR_LINE2);
+        lcd_write_string(fd, LCD_BACKLIGHT_ON, line4);
         lcd_delay(INTERVAL);
     } while (count++ < 10);
 

@@ -51,10 +51,9 @@ int main(int argc, char *argv[])
         int button_status = GPIORead(BUTTON_IN);
 
         printf("Button : %d from pin %d\n", button_status, BUTTON_IN);
-        printf("\n");
 
         sleep(INTERVAL);
-    } while (count++);
+    } while (count++ < 10);
 
     /*
      * Disable GPIO pins

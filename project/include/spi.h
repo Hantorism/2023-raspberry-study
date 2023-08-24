@@ -22,4 +22,6 @@ uint8_t control_bits(uint8_t channel);
 
 int read_adc(int spi, uint8_t channel);
 
+int spi_final(int fd);
+
 #endif
